@@ -1,0 +1,60 @@
+<%= turbo_frame_tag 'categories' do %>
+<h1> products </h1>
+<div>
+  <%= notice %>
+</div>
+
+<%= form_with url: request.original_url, method: :get %>
+  <input type="text" name="search" value="<%= params[:search] %>">
+  <input type="submit" value="Send Request" />
+</form>
+
+<%= form_with url: products_path, method: :get do |f|%>
+  <%= f.number_field :min_price, placeholder: 'min', onChange: 'this.form.requestSubmit()', value: params[:min_price] %>
+  <%= f.number_field :max_price, placeholder: 'max', onChange: 'this.form.requestSubmit()', value: params[:max_price] %>
+<% end %>
+
+<div id="categories">
+  <%= link_to products_path do %> All | <% end %>
+  <% @categories.each do |category| %>
+    <%= link_to products_path(category_id: category.id) do  %>
+      <%= category.name %> |
+    <% end %>
+  <% end %>
+</div>
+
+<%= link_to new_product_path do %> New <% end %>
+<br>
+<table border=1>
+    <thead>
+      <tr>
+        <td colspan=6 align=center><b>Inventory</b></td>
+      </tr>
+      <tr>
+          <td><b>Item</b></td>
+          <td><b>Description</b></td>
+          <td>Price</td>
+          <td><b>Img</b></td>
+          <td colspan=3><b>Actions</b></td>
+      </tr>
+    </thead>
+    <tbody>
+        <% @products.each do |product| %>
+        <tr>
+            <td><%= product.title %></td>
+            <td><%= product.desc_text %></td>
+            <td><%= product.price %></td>
+            <td><%= image_tag product.photo, size: 50 if product.photo.attached? %></td>
+            <!-- add this line -->
+            <td><%= link_to product_path(product.id) do %> view <% end %> </td>
+            <td><%= link_to edit_product_path(product.id) do %> edit <% end %> </td>
+            <td><%= link_to "delete", product_path(product.id), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } %></td>
+        </tr>
+        <% end %>
+    </tbody>
+</table>
+Cantidad: <%= @products.count %>
+<% end %>

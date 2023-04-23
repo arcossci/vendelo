@@ -1,0 +1,20 @@
+<h2>New product</h2>
+<%= form_for @product, method: :post do |f| %>
+  <% @product.errors.full_messages.each do |error| %>
+  <div>
+    <%= error %>
+  </div>
+  <%end%>
+  <%= f.label 'Product Title' %><br>
+  <%= f.text_field :title %><br>
+
+  <%= f.label 'Product Description' %><br>
+  <%= f.text_area :desc_text %><br>
+
+  <%= f.collection_select :category_id, Category.all.order(name: :asc), :id, :name %>
+
+  <%= f.label 'Product Photo' %><br>
+  <%= f.file_field :photo %><br>
+
+  <%= f.submit "Submit" %>
+<%end%>

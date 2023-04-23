@@ -1,0 +1,12 @@
+<h2>Detalle producto</h2>
+<br>
+<b>Nombre:</b> <%= @product.title %>
+<br>
+<b>Descripcion:</b> <br>
+<%= @product.desc_text %>
+<br>
+<b>Fecha modificación:</b> <br>
+<%= @product.updated_at %>
+<br>
+<b>Img:</b> <br>
+<%= image_tag @product.photo, size: 200 if @product.photo.attached? %>
